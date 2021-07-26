@@ -126,6 +126,11 @@ public class FTambahBarang extends javax.swing.JInternalFrame {
         jLabel6.setText("Supplier");
 
         cbSupplierb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih Supplier" }));
+        cbSupplierb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbSupplierbActionPerformed(evt);
+            }
+        });
 
         tblSubmitb.setText("Submit");
         tblSubmitb.addActionListener(new java.awt.event.ActionListener() {
@@ -148,14 +153,12 @@ public class FTambahBarang extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(136, 136, 136)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(tblResetB)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tblSubmitb)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addContainerGap(142, Short.MAX_VALUE))))
+                        .addComponent(tblSubmitb))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,6 +228,10 @@ public class FTambahBarang extends javax.swing.JInternalFrame {
            tambahBarang();
         } 
     }//GEN-LAST:event_tblSubmitbActionPerformed
+
+    private void cbSupplierbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSupplierbActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbSupplierbActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

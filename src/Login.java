@@ -237,7 +237,7 @@ public class Login extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+            UIManager.setLookAndFeel("com.jtattoo.plaf.luna.LunaLookAndFeel");
             SwingUtilities.updateComponentTreeUI(new UIbaru());
         } catch(Exception e){
             JOptionPane.showMessageDialog(null, "Error : " + e);
