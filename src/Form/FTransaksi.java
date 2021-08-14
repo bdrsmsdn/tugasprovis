@@ -31,59 +31,114 @@ public class FTransaksi extends javax.swing.JInternalFrame {
      */
     public FTransaksi() {
         initComponents();
-        tabel();
+        tampilBarang();
+        tampilPembeli();
     }
     
-    public void clearComponents() {
-        txtIdt.setText("");
-        txtIdb.setText("");
-        txtIdp.setText("");
-        txtNamab.setText("");
+    public void clearComponents() {        
         txtHargab.setText("");
-        txtNamap.setText("");
+        cbBarang.setSelectedIndex(0);
+        cbPembeli.setSelectedIndex(0);
     }
     
-    private void tabel(){ 
-    DefaultTableModel t= new DefaultTableModel();
-    t.addColumn("ID Transaksi");
-    t.addColumn("Nama Barang");   
-    t.addColumn("Tanggal");
-    t.addColumn("Harga");
-    t.addColumn("Nama Pembeli");
-    t.addColumn("Keterangan");
-     tabelTransaksi.setModel(t); 
- 
- try { 
-    //conect
-    Connection conn = (Connection) Config.configDB();
+    public void tambahTransaksi(){
+        try {             
+            Connection conn = (Connection) Config.configDB();
+            Statement st = conn.createStatement();
+            String sql = "insert into transaksi(id_barang, id_pembeli, tanggal, keterangan) values (" + cbBarang.getSelectedIndex()+ "," + cbPembeli.getSelectedIndex()+ ",'" + tanggal + "','Belum Lunas')";
+            st.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan!");
+            clearComponents();
+            st.close();                    
+        } catch (Exception e) { 
+            JOptionPane.showMessageDialog(null, "Error : "+e); 
+        }
+    }        
     
-    //query sql
-    String sql = "SELECT t.id_transaksi, t.tanggal, t.keterangan, p.nama_pembeli,"
-            + "b.nama_barang, b.harga FROM transaksi as t JOIN barang as b JOIN pembeli as p WHERE "
-            + "t.id_barang = b.id_barang AND t.id_pembeli = p.id_pembeli ORDER BY t.id_transaksi ASC";
-
-    Statement st = conn.createStatement();
-    
-    //exce
-    ResultSet rs = st.executeQuery(sql);
-    rs = st.executeQuery(sql);
-     while (rs.next()) { 
-        t.addRow(new Object[]{ 
-            rs.getString("id_transaksi"),
-            rs.getString("nama_barang"),   
-            rs.getString("tanggal"), 
-            rs.getString("harga"),    
-            rs.getString("nama_pembeli"),
-            rs.getString("keterangan"),
-        }); 
+    public void tampilBarang() {        
+        
+        try {            
+        //connect ke db
+            Connection conn = (Connection) Config.configDB();
+            
+            //buka query
+            Statement st = conn.createStatement();
+            
+            //query sql
+            String sql = "SELECT nama_barang from barang ORDER BY id_barang ASC";
+            
+            //exce
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
+                Object[] ob = new Object[1];
+                ob[0] = rs.getString("nama_barang");
+                cbBarang.addItem((String)ob[0]);
+            }
+            
+            rs.close();
+            st.close();
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error : "+e);
+        }
+        
     }
-     rs.close();
-     st.close();
-    }catch (Exception e) { 
-    JOptionPane.showMessageDialog(null,"Error : "+e); 
-    } 
-}
-
+    
+    public void tampilPembeli() {        
+        
+        try {            
+        //connect ke db
+            Connection conn = (Connection) Config.configDB();
+            
+            //buka query
+            Statement st = conn.createStatement();
+            
+            //query sql
+            String sql = "SELECT nama_pembeli from pembeli ORDER BY id_pembeli ASC";
+            
+            //exce
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
+                Object[] ob = new Object[1];
+                ob[0] = rs.getString("nama_pembeli");
+                cbPembeli.addItem((String)ob[0]);
+            }
+            
+            rs.close();
+            st.close();
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error : "+e);
+        }
+        
+    }
+    
+    public void tampilData(){
+        try{
+            //connect ke db
+            Connection conn = (Connection) Config.configDB();
+            
+            //buka query
+            Statement st = conn.createStatement();
+            
+            //query sql
+            String sql = "SELECT harga from barang where nama_barang = '"+cbBarang.getSelectedItem()+"'";
+            
+            //exce
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
+                txtHargab.setText(rs.getString("harga"));
+            }
+            
+            rs.close();
+            st.close();
+            
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error : "+e);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -93,49 +148,18 @@ public class FTransaksi extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabelTransaksi = new javax.swing.JTable();
         tblTambah = new javax.swing.JButton();
-        tblEdit = new javax.swing.JButton();
-        tblHapus = new javax.swing.JButton();
-        txtIdt = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        tblCari = new javax.swing.JButton();
-        txtIdb = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtHargab = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        tblCarib = new javax.swing.JButton();
-        txtNamab = new javax.swing.JTextField();
-        txtIdp = new javax.swing.JTextField();
-        tblCarip = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        txtNamap = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("TRANSAKSI");
-
-        tabelTransaksi.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tabelTransaksi);
+        tblReset = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        cbBarang = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        cbPembeli = new javax.swing.JComboBox();
 
         tblTambah.setText("Tambah");
         tblTambah.addActionListener(new java.awt.event.ActionListener() {
@@ -144,282 +168,175 @@ public class FTransaksi extends javax.swing.JInternalFrame {
             }
         });
 
-        tblEdit.setText("Edit");
-        tblEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tblEditActionPerformed(evt);
-            }
-        });
-
-        tblHapus.setText("Hapus");
-        tblHapus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tblHapusActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("ID Transaksi");
-
-        tblCari.setText("Cari");
-        tblCari.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tblCariActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("ID Barang");
-
         jLabel4.setText("Harga");
 
-        jLabel5.setText("ID Pembeli");
-
-        jLabel6.setText("Nama Barang");
-
-        tblCarib.setText("Cari");
-        tblCarib.addActionListener(new java.awt.event.ActionListener() {
+        tblReset.setText("Reset");
+        tblReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tblCaribActionPerformed(evt);
+                tblResetActionPerformed(evt);
             }
         });
 
-        tblCarip.setText("Cari");
-        tblCarip.addActionListener(new java.awt.event.ActionListener() {
+        jPanel5.setBackground(new java.awt.Color(69, 123, 157));
+
+        jPanel6.setBackground(new java.awt.Color(241, 250, 238));
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 369, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+
+        jLabel8.setBackground(new java.awt.Color(241, 250, 238));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(241, 250, 238));
+        jLabel8.setText("FORM TAMBAH TRANSAKSI");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(59, 59, 59)
+                .addComponent(jLabel8)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel4.setBackground(new java.awt.Color(230, 57, 70));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 8, Short.MAX_VALUE)
+        );
+
+        cbBarang.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih Barang" }));
+        cbBarang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tblCaripActionPerformed(evt);
+                cbBarangActionPerformed(evt);
             }
         });
 
-        jLabel7.setText("Nama Pembeli");
+        jLabel3.setText("Nama Barang");
 
-        jButton1.setText("Refresh");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        jLabel9.setText("Nama Pembeli");
+
+        cbPembeli.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih Nama Pembeli" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
+                .addGap(63, 63, 63)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(267, 267, 267)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(151, 151, 151)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel7))
-                                .addGap(22, 22, 22)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtIdp)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(tblCarip))
-                                    .addComponent(txtNamab)
-                                    .addComponent(txtHargab)
-                                    .addComponent(txtNamap, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(txtIdt, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtIdb, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(tblCarib)
-                                            .addComponent(tblCari)))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(tblTambah)
-                                .addGap(18, 18, 18)
-                                .addComponent(tblEdit)
-                                .addGap(18, 18, 18)
-                                .addComponent(tblHapus)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1)))))
-                .addContainerGap(162, Short.MAX_VALUE))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbBarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtHargab, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbPembeli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(tblTambah)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tblReset)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel1)
-                .addGap(27, 27, 27)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtIdt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tblCari))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtIdb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(tblCarib))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(cbBarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtNamab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(txtHargab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtHargab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(txtNamap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tblTambah)
-                            .addComponent(tblEdit)
-                            .addComponent(tblHapus)
-                            .addComponent(jButton1)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtIdp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(tblCarip)))
+                    .addComponent(jLabel9)
+                    .addComponent(cbPembeli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tblTambah)
+                    .addComponent(tblReset))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tblCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblCariActionPerformed
-        // TODO add your handling code here:
-        try { 
-            Connection conn = (Connection) Config.configDB();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select * from transaksi where "+ "id_transaksi='" +txtIdt.getText()
-            +"'" ); 
-            while (rs.next()) { 
-                txtIdb.setText(rs.getString("id_transaksi")); 
-                txtIdp.setText(rs.getString("id_pembeli"));
-                }                                        
-        } catch (Exception e) { 
-        JOptionPane.showMessageDialog(null, "Error : "+e); 
-        } 
-    }//GEN-LAST:event_tblCariActionPerformed
-
-    private void tblCaribActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblCaribActionPerformed
-        // TODO add your handling code here:
-        try { 
-            Connection conn = (Connection) Config.configDB();
-            Statement st = conn.createStatement();
-            ResultSet rs=st.executeQuery("select * from barang where "+ "id_barang='" +txtIdb.getText()
-            +"'" ); 
-            while (rs.next()) { 
-                txtNamab.setText(rs.getString("nama_barang")); 
-                txtHargab.setText(rs.getString("harga"));
-                }                                        
-        } catch (Exception e) { 
-            JOptionPane.showMessageDialog(null, "Error : "+e); 
-        } 
-    }//GEN-LAST:event_tblCaribActionPerformed
-
-    private void tblCaripActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblCaripActionPerformed
-        // TODO add your handling code here:
-        try { 
-            Connection conn = (Connection) Config.configDB();
-            Statement st = conn.createStatement();
-            ResultSet rs=st.executeQuery("select * from pembeli where "+ "id_pembeli='" +txtIdp.getText()
-            +"'" ); 
-            while (rs.next()) { 
-                txtNamap.setText(rs.getString("nama_pembeli"));
-                }                                        
-        } catch (Exception e) { 
-            JOptionPane.showMessageDialog(null, "Error : "+e); 
-        } 
-    }//GEN-LAST:event_tblCaripActionPerformed
-
     private void tblTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblTambahActionPerformed
-        // TODO add your handling code here:
-        
-        try { 
-            
-            Connection conn = (Connection) Config.configDB();
-            Statement st = conn.createStatement();
-            String sql = "insert into transaksi(id_barang, id_pembeli, tanggal, keterangan) values (" + txtIdb.getText() + "," + txtIdp.getText() + ",'" + tanggal + "','Belum Lunas')";
-            st.executeUpdate(sql);
-            JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan!");
-            clearComponents();
-            st.close();                              
-        } catch (Exception e) { 
-            JOptionPane.showMessageDialog(null, "Error : "+e); 
-        } 
+        // TODO add your handling code here: 
+        if(cbBarang.getSelectedIndex() == 0){
+            JOptionPane.showMessageDialog(null, "Pilih salah satu barang!");
+        } else if (cbPembeli.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Harap isi pembeli!");
+        } else if (txtHargab.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Harga Barang tidak boleh kosong!");
+        } else if (!txtHargab.getText().matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(null, "Harga Barang hanya berupa angka!");
+        } else {
+            tambahTransaksi();
+        }
     }//GEN-LAST:event_tblTambahActionPerformed
 
-    private void tblEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblEditActionPerformed
+    private void tblResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblResetActionPerformed
         // TODO add your handling code here:
-        try {            
-            Connection conn = (Connection) Config.configDB();
-            Statement st = conn.createStatement();
-            String sql = "update transaksi set id_barang = '" + txtIdb.getText() + "', id_pembeli = '" + txtIdp.getText() + "'"
-                    + "where id_transaksi = '" + txtIdt.getText() + "'";
-            st.executeUpdate(sql);
-            JOptionPane.showMessageDialog(null, "Data berhasil diupdate!");
-            clearComponents();
-            st.close();                              
-        } catch (Exception e) { 
-            JOptionPane.showMessageDialog(null, "Error : "+e); 
-        } 
-    }//GEN-LAST:event_tblEditActionPerformed
+        clearComponents();
+    }//GEN-LAST:event_tblResetActionPerformed
 
-    private void tblHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblHapusActionPerformed
+    private void cbBarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbBarangActionPerformed
         // TODO add your handling code here:
-        try { 
-            
-            Connection conn = (Connection) Config.configDB();
-            Statement st = conn.createStatement();
-            String sql = "delete from transaksi where id_transaksi = " + txtIdt.getText();
-            st.executeUpdate(sql);
-            JOptionPane.showMessageDialog(null, "Data berhasil dihapus!");
-            clearComponents();
-            st.close();                              
-        } catch (Exception e) { 
-            JOptionPane.showMessageDialog(null, "Error : "+e); 
-        } 
-    }//GEN-LAST:event_tblHapusActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        tabel();
-    }//GEN-LAST:event_jButton1ActionPerformed
+        tampilData();
+    }//GEN-LAST:event_cbBarangActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JComboBox cbBarang;
+    private javax.swing.JComboBox cbPembeli;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabelTransaksi;
-    private javax.swing.JButton tblCari;
-    private javax.swing.JButton tblCarib;
-    private javax.swing.JButton tblCarip;
-    private javax.swing.JButton tblEdit;
-    private javax.swing.JButton tblHapus;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JButton tblReset;
     private javax.swing.JButton tblTambah;
     private javax.swing.JTextField txtHargab;
-    private javax.swing.JTextField txtIdb;
-    private javax.swing.JTextField txtIdp;
-    private javax.swing.JTextField txtIdt;
-    private javax.swing.JTextField txtNamab;
-    private javax.swing.JTextField txtNamap;
     // End of variables declaration//GEN-END:variables
 }

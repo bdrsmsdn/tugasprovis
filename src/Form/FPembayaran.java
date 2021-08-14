@@ -31,7 +31,6 @@ public class FPembayaran extends javax.swing.JInternalFrame {
      */
     public FPembayaran() {
         initComponents();
-        tabel();
         tampilTransaksi();
     }
     
@@ -73,48 +72,6 @@ public class FPembayaran extends javax.swing.JInternalFrame {
         cbTransaksi.removeAllItems();
     }
     
-    private void tabel(){ 
-    DefaultTableModel t= new DefaultTableModel();
-    t.addColumn("ID Pembayaran");
-    t.addColumn("Nama Barang"); 
-    t.addColumn("Total Bayar");
-    t.addColumn("Nama Pembeli");
-    t.addColumn("Tanggal");        
-    t.addColumn("Keterangan");
-    tabelPembayaran.setModel(t); 
- 
- try { 
-    //conect
-    Connection conn = (Connection) Config.configDB();
-    
-    //query sql
-    String sql = "SELECT pe.id_pembayaran, t.tanggal, t.keterangan,"
-            + " p.nama_pembeli,b.nama_barang, b.harga FROM pembayaran as pe JOIN transaksi as t"
-            + " JOIN barang as b JOIN pembeli as p WHERE pe.id_transaksi = t.id_transaksi AND t.id_barang = b.id_barang "
-            + "AND t.id_pembeli = p.id_pembeli ORDER BY pe.id_pembayaran ASC";
-
-    Statement st = conn.createStatement();
-    
-    //exce
-    ResultSet rs = st.executeQuery(sql);
-    rs = st.executeQuery(sql);
-     while (rs.next()) { 
-        t.addRow(new Object[]{ 
-            rs.getString("id_pembayaran"),
-            rs.getString("nama_barang"),  
-            rs.getString("harga"),             
-            rs.getString("nama_pembeli"),
-            rs.getString("tanggal"),
-            rs.getString("keterangan"),
-        }); 
-    }
-     rs.close();
-     st.close();
-    }catch (Exception e) { 
-    JOptionPane.showMessageDialog(null,"Error : "+e); 
-    } 
-}
-    
     public void tampilData(){
         try{
             //connect ke db
@@ -155,6 +112,23 @@ public class FPembayaran extends javax.swing.JInternalFrame {
         }
     }
 
+    public void confirmPembayaran(){
+        try { 
+            
+            Connection conn = (Connection) Config.configDB();
+            Statement st = conn.createStatement();
+            String sql = "insert into pembayaran(tgl_bayar, total_bayar, id_transaksi) values ('"+tanggal+"',"+txtHargab.getText()+","+cbTransaksi.getSelectedItem()+")";
+            String sql2 = "update transaksi set keterangan='LUNAS' where id_transaksi = "+cbTransaksi.getSelectedItem();
+            st.executeUpdate(sql);
+            st.executeUpdate(sql2);
+            JOptionPane.showMessageDialog(null, "Transaksi sudah dikonfirmasi!");
+            clearComponents();
+            st.close();                              
+        } catch (Exception e) { 
+            JOptionPane.showMessageDialog(null, "Error : "+e); 
+        } 
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -164,9 +138,6 @@ public class FPembayaran extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabelPembayaran = new javax.swing.JTable();
         tblConfirm = new javax.swing.JButton();
         txtIdb = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -181,27 +152,10 @@ public class FPembayaran extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         cbTransaksi = new javax.swing.JComboBox();
         tblRefresh = new javax.swing.JButton();
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("PEMBAYARAN");
-
-        tabelPembayaran.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tabelPembayaran);
+        jPanel13 = new javax.swing.JPanel();
+        jPanel14 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
 
         tblConfirm.setText("Konfirmasi");
         tblConfirm.addActionListener(new java.awt.event.ActionListener() {
@@ -236,24 +190,76 @@ public class FPembayaran extends javax.swing.JInternalFrame {
             }
         });
 
+        jPanel13.setBackground(new java.awt.Color(69, 123, 157));
+
+        jPanel14.setBackground(new java.awt.Color(241, 250, 238));
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 411, Short.MAX_VALUE)
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+
+        jLabel9.setBackground(new java.awt.Color(241, 250, 238));
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(241, 250, 238));
+        jLabel9.setText("FORM PEMBAYARAN");
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addGap(107, 107, 107))
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+                .addContainerGap(37, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addGap(30, 30, 30)
+                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel4.setBackground(new java.awt.Color(230, 57, 70));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 8, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
+            .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
+                .addGap(67, 67, 67)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(172, 172, 172)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel7)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(268, 268, 268)
+                        .addGap(96, 96, 96)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtIdp)
@@ -264,10 +270,7 @@ public class FPembayaran extends javax.swing.JInternalFrame {
                             .addComponent(txtIdb, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(267, 267, 267)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(220, 220, 220)
+                        .addGap(48, 48, 48)
                         .addComponent(tblConfirm)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tblRefresh)))
@@ -275,10 +278,11 @@ public class FPembayaran extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(cbTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -304,34 +308,42 @@ public class FPembayaran extends javax.swing.JInternalFrame {
                             .addComponent(txtNamap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(txtIdp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tblConfirm)
                     .addComponent(tblRefresh))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblConfirmActionPerformed
-        // TODO add your handling code here:
-        
-        try { 
-            
-            Connection conn = (Connection) Config.configDB();
-            Statement st = conn.createStatement();
-            String sql = "insert into pembayaran(tgl_bayar, total_bayar, id_transaksi) values ('"+tanggal+"',"+txtHargab.getText()+","+cbTransaksi.getSelectedItem()+")";
-            String sql2 = "update transaksi set keterangan='LUNAS' where id_transaksi = "+cbTransaksi.getSelectedItem();
-            st.executeUpdate(sql);
-            st.executeUpdate(sql2);
-            JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan!");
-            clearComponents();
-            st.close();                              
-        } catch (Exception e) { 
-            JOptionPane.showMessageDialog(null, "Error : "+e); 
-        } 
+        // TODO add your handling code here:    
+        if(cbTransaksi.getSelectedIndex() == 0){
+            JOptionPane.showMessageDialog(null, "ID Transaksi tidak boleh kosong!");
+        } else if(txtIdb.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(null, "ID Barang tidak boleh kosong!");
+        } else if (!txtIdb.getText().matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(null, "ID Barang hanya berupa angka!");
+        } else if(txtIdp.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(null, "ID Pembeli tidak boleh kosong!");
+        } else if (!txtIdp.getText().matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(null, "ID Pembeli hanya berupa angka!");
+        } else if (txtNamab.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nama Barang tidak boleh kosong!");
+        } else if (txtHargab.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Harga Barang tidak boleh kosong!");
+        } else if (!txtHargab.getText().matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(null, "Harga Barang hanya berupa angka!");
+        } else if (txtNamap.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nama Pembeli tidak boleh kosong!");
+        } else {
+            int val = JOptionPane.showConfirmDialog(null, "Konfirmasi pembayaran?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+
+            if(val == JOptionPane.YES_OPTION){
+                confirmPembayaran();            
+            }            
+        }
     }//GEN-LAST:event_tblConfirmActionPerformed
 
     private void cbTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTransaksiActionPerformed
@@ -342,22 +354,30 @@ public class FPembayaran extends javax.swing.JInternalFrame {
     private void tblRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblRefreshActionPerformed
         // TODO add your handling code here:
         clearComponents();
-        tabel();
         tampilTransaksi();
     }//GEN-LAST:event_tblRefreshActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbTransaksi;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabelPembayaran;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JButton tblConfirm;
     private javax.swing.JButton tblRefresh;
     private javax.swing.JTextField txtHargab;

@@ -1,8 +1,8 @@
 
 import Form.FPembayaran;
-import Form.FTambahBarang;
-import Form.FTambahPembeli;
-import Form.FTambahSupplier;
+import Form.FBarang;
+import Form.FPembeli;
+import Form.FSupplier;
 import Form.FTransaksi;
 import data.FLihatBarang;
 import data.FLihatPembayaran;
@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
+import laporan.CetakLaporan;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -52,7 +53,6 @@ public class MainFrame extends javax.swing.JFrame {
                 g.drawImage(img ,0 ,0 ,getWidth(), getHeight(), this);
             }
         };
-        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         menuTambahBarang = new javax.swing.JMenuItem();
@@ -70,39 +70,27 @@ public class MainFrame extends javax.swing.JFrame {
         dataPembayaran = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         dataSupplier = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        menuLaporanb = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("TRANSAKSI");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout panelUtamaLayout = new javax.swing.GroupLayout(panelUtama);
         panelUtama.setLayout(panelUtamaLayout);
         panelUtamaLayout.setHorizontalGroup(
             panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelUtamaLayout.createSequentialGroup()
-                .addGap(435, 435, 435)
-                .addComponent(jButton1)
-                .addContainerGap(476, Short.MAX_VALUE))
+            .addGap(0, 1000, Short.MAX_VALUE)
         );
         panelUtamaLayout.setVerticalGroup(
             panelUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelUtamaLayout.createSequentialGroup()
-                .addGap(311, 311, 311)
-                .addComponent(jButton1)
-                .addContainerGap(332, Short.MAX_VALUE))
+            .addGap(0, 666, Short.MAX_VALUE)
         );
-        panelUtama.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jMenu2.setText("Form");
 
-        menuTambahBarang.setText("Tambah Data Barang");
+        menuTambahBarang.setText("Data Barang");
         menuTambahBarang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuTambahBarangActionPerformed(evt);
@@ -110,7 +98,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu2.add(menuTambahBarang);
 
-        menuTambahPembeli.setText("Tambah Data Pembeli");
+        menuTambahPembeli.setText("Data Pembeli");
         menuTambahPembeli.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuTambahPembeliActionPerformed(evt);
@@ -118,7 +106,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu2.add(menuTambahPembeli);
 
-        menuTambahSupplier.setText("Tambah Data Supplier");
+        menuTambahSupplier.setText("Data Supplier");
         menuTambahSupplier.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuTambahSupplierActionPerformed(evt);
@@ -126,7 +114,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu2.add(menuTambahSupplier);
 
-        menuTambahTransaksi.setText("Tambah Data Transaksi");
+        menuTambahTransaksi.setText("Data Transaksi");
         menuTambahTransaksi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuTambahTransaksiActionPerformed(evt);
@@ -134,7 +122,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu2.add(menuTambahTransaksi);
 
-        menuTambahPembayaran.setText("Tambah Data Pembayaran");
+        menuTambahPembayaran.setText("Data Pembayaran");
         menuTambahPembayaran.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuTambahPembayaranActionPerformed(evt);
@@ -192,6 +180,18 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(menuSupplier);
 
+        jMenu1.setText("Laporan");
+
+        menuLaporanb.setText("Laporan Pembayaran");
+        menuLaporanb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuLaporanbActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuLaporanb);
+
+        jMenuBar1.add(jMenu1);
+
         jMenu3.setText("About");
 
         jMenuItem2.setText("Made with <3 by Mart Team Provis 6");
@@ -228,7 +228,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         panelUtama.removeAll();
         panelUtama.repaint();
-        FTambahBarang tbh = new FTambahBarang();
+        FBarang tbh = new FBarang();
         
         //size screen
         Dimension layarUtama = this.getSize();
@@ -262,7 +262,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         panelUtama.removeAll();
         panelUtama.repaint();
-        FTambahPembeli pbl = new FTambahPembeli();
+        FPembeli pbl = new FPembeli();
         
         //size screen
         Dimension layarUtama = this.getSize();
@@ -279,7 +279,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         panelUtama.removeAll();
         panelUtama.repaint();
-        FTambahSupplier spl = new FTambahSupplier();
+        FSupplier spl = new FSupplier();
         
         //size screen
         Dimension layarUtama = this.getSize();
@@ -360,10 +360,6 @@ public class MainFrame extends javax.swing.JFrame {
         spl.setVisible(true);
     }//GEN-LAST:event_dataTransaksiActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void menuTambahTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuTambahTransaksiActionPerformed
         // TODO add your handling code here:
         panelUtama.removeAll();
@@ -398,6 +394,23 @@ public class MainFrame extends javax.swing.JFrame {
         spl.setVisible(true);
     }//GEN-LAST:event_menuTambahPembayaranActionPerformed
 
+    private void menuLaporanbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLaporanbActionPerformed
+        // TODO add your handling code here:
+        panelUtama.removeAll();
+        panelUtama.repaint();
+        CetakLaporan spl = new CetakLaporan();
+        
+        //size screen
+        Dimension layarUtama = this.getSize();
+        Dimension layarTbh = spl.getSize();
+        
+        //simpan posisi frame ke tengah
+        spl.setLocation(layarUtama.width/2-layarTbh.width/2,layarUtama.height/2-layarTbh.height/2);
+        
+        panelUtama.add(spl);
+        spl.setVisible(true);
+    }//GEN-LAST:event_menuLaporanbActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem dataBarang;
@@ -405,7 +418,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem dataPembeli;
     private javax.swing.JMenuItem dataSupplier;
     private javax.swing.JMenuItem dataTransaksi;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
@@ -414,6 +427,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JMenuItem menuLaporanb;
     private javax.swing.JMenu menuSupplier;
     private javax.swing.JMenuItem menuTambahBarang;
     private javax.swing.JMenuItem menuTambahPembayaran;

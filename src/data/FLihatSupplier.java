@@ -27,6 +27,13 @@ public class FLihatSupplier extends javax.swing.JInternalFrame {
         tabel();
     }
 
+        public void clearComponents() {
+            txtId.setText("");
+            txtNama.setText("");
+            txtAlamat.setText("");
+            txtNo.setText("");
+        }
+    
 private void tabel(){ 
     DefaultTableModel t= new DefaultTableModel();
     t.addColumn("ID Supplier");
@@ -34,7 +41,7 @@ private void tabel(){
     t.addColumn("No Telepon");
     t.addColumn("Alamat");
      tabelSupplier.setModel(t); 
- 
+     
  try { 
     //conect
     Connection conn = (Connection) Config.configDB();
@@ -60,7 +67,81 @@ private void tabel(){
     JOptionPane.showMessageDialog(null,"Error : "+e); 
     } 
 }
+
+private void cariSupplier(){ 
+    DefaultTableModel t= new DefaultTableModel();
+    t.addColumn("ID Supplier");
+    t.addColumn("Nama Supplier");   
+    t.addColumn("No Telepon");
+    t.addColumn("Alamat");
+     tabelSupplier.setModel(t); 
+     
+     int lengthRow = t.getRowCount();
+        for (int n=0; n<lengthRow; n++) {
+            t.removeRow(n);
+        }
+     
+ try { 
+    //conect
+    Connection conn = (Connection) Config.configDB();
+            
+    //state
+    Statement st = conn.createStatement();
     
+    //query sql
+    String sql = "select * from supplier where nama_supplier like '%"+ txtCari.getText() +"%'"; 
+    //exce
+    ResultSet rs = st.executeQuery(sql);
+     while (rs.next()) { 
+        t.addRow(new Object[]{ 
+            rs.getString("id_supplier"),
+            rs.getString("nama_supplier"),    
+            rs.getString("no_telp"), 
+            rs.getString("alamat")
+        }); 
+    }
+     rs.close();
+    st.close();
+    }catch (Exception e) { 
+    JOptionPane.showMessageDialog(null,"Error : "+e); 
+    } 
+}
+    
+        public void hapusSupplier(){
+        try {             
+            Connection conn = (Connection) Config.configDB();
+            Statement st = conn.createStatement();
+            String sql = "delete from supplier where id_supplier = " + txtId.getText();
+            st.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Data berhasil dihapus!");
+            st.close();     
+            tabel();
+        } catch (Exception e) { 
+            JOptionPane.showMessageDialog(null, "Error : "+e); 
+        }                         
+    }
+        
+        public void editSupplier() {
+        try {
+            //conect
+            Connection conn = (Connection) Config.configDB();
+            
+            //state
+            Statement state = conn.createStatement();
+            
+            //query
+            String sql = "update supplier set nama_supplier = '"+ txtNama.getText() +"' , no_telp = '" + txtNo.getText() + ""
+                    + "', alamat = '"+ txtAlamat.getText() +"' where id_supplier = " + txtId.getText();
+            state.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Data berhasil diupdate!");
+            clearComponents();
+            state.close();
+            tabel();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error : " + e);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,54 +151,277 @@ private void tabel(){
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
         tabelSupplier = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        txtCari = new javax.swing.JTextField();
+        tblCari = new javax.swing.JButton();
+        tblEdit = new javax.swing.JButton();
+        tblHapus = new javax.swing.JButton();
+        txtId = new javax.swing.JTextField();
+        txtNama = new javax.swing.JTextField();
+        txtNo = new javax.swing.JTextField();
+        txtAlamat = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("LIHAT SUPPLIER");
+        jPanel1.setBackground(new java.awt.Color(168, 218, 220));
+        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         tabelSupplier.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 2", "Title 4", "Title 5"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(tabelSupplier);
+        tabelSupplier.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelSupplierMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabelSupplier);
+
+        jPanel2.setBackground(new java.awt.Color(69, 123, 157));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(241, 250, 238));
+        jLabel1.setText("LIHAT SUPPLIER");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 710, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(275, 275, 275))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel4.setBackground(new java.awt.Color(230, 57, 70));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 8, Short.MAX_VALUE)
+        );
+
+        tblCari.setText("Cari");
+        tblCari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tblCariActionPerformed(evt);
+            }
+        });
+
+        tblEdit.setText("Edit");
+        tblEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tblEditActionPerformed(evt);
+            }
+        });
+
+        tblHapus.setText("Hapus");
+        tblHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tblHapusActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("ID Supplier");
+
+        jLabel3.setText("Nama Supplier");
+
+        jLabel4.setText("No Telepon");
+
+        jLabel5.setText("Alamat");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tblCari))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtAlamat, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(tblEdit)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tblHapus))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtNo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addGap(31, 31, 31))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tblCari))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAlamat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(tblEdit)
+                    .addComponent(tblHapus))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(171, 171, 171)
-                        .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(jLabel1)
-                .addGap(56, 56, 56)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tblCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblCariActionPerformed
+        // TODO add your handling code here:
+        cariSupplier();
+    }//GEN-LAST:event_tblCariActionPerformed
+
+    private void tabelSupplierMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelSupplierMouseClicked
+        // TODO add your handling code here:
+        int baris = tabelSupplier.rowAtPoint(evt.getPoint());
+
+        String id = tabelSupplier.getValueAt(baris, 0).toString();
+        txtId.setText(id);
+        txtId.setEditable(false);
+        
+        String nama = tabelSupplier.getValueAt(baris, 1).toString();
+        txtNama.setText(nama);
+        
+        String no = tabelSupplier.getValueAt(baris, 2).toString();
+        txtNo.setText(no);
+        
+        String alamat = tabelSupplier.getValueAt(baris, 3).toString();
+        txtAlamat.setText(alamat);
+    }//GEN-LAST:event_tabelSupplierMouseClicked
+
+    private void tblHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblHapusActionPerformed
+        // TODO add your handling code here:
+        int val = JOptionPane.showConfirmDialog(null, "Kamu yakin mau menghapus data ini?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+
+            if(val == JOptionPane.YES_OPTION){
+                hapusSupplier();
+            }
+    }//GEN-LAST:event_tblHapusActionPerformed
+
+    private void tblEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblEditActionPerformed
+        // TODO add your handling code here:
+        if (txtNama.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nama Supplier tidak boleh kosong!");
+        } else if (txtNo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No Telepon tidak boleh kosong!");
+        } else if (!txtNo.getText().matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(null, "No Telepon hanya berupa angka!");
+        } else if (txtAlamat.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Alamat tidak boleh kosong!");
+        } else {
+            editSupplier();
+        }
+    }//GEN-LAST:event_tblEditActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabelSupplier;
+    private javax.swing.JButton tblCari;
+    private javax.swing.JButton tblEdit;
+    private javax.swing.JButton tblHapus;
+    private javax.swing.JTextField txtAlamat;
+    private javax.swing.JTextField txtCari;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtNama;
+    private javax.swing.JTextField txtNo;
     // End of variables declaration//GEN-END:variables
 }

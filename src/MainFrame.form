@@ -11,7 +11,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuTambahBarang">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Tambah Data Barang"/>
+                <Property name="text" type="java.lang.String" value="Data Barang"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuTambahBarangActionPerformed"/>
@@ -19,7 +19,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuTambahPembeli">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Tambah Data Pembeli"/>
+                <Property name="text" type="java.lang.String" value="Data Pembeli"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuTambahPembeliActionPerformed"/>
@@ -27,7 +27,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuTambahSupplier">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Tambah Data Supplier"/>
+                <Property name="text" type="java.lang.String" value="Data Supplier"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuTambahSupplierActionPerformed"/>
@@ -35,7 +35,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuTambahTransaksi">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Tambah Data Transaksi"/>
+                <Property name="text" type="java.lang.String" value="Data Transaksi"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuTambahTransaksiActionPerformed"/>
@@ -43,7 +43,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuTambahPembayaran">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Tambah Data Pembayaran"/>
+                <Property name="text" type="java.lang.String" value="Data Pembayaran"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuTambahPembayaranActionPerformed"/>
@@ -102,6 +102,21 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dataSupplierActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenu1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Laporan"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="menuLaporanb">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Laporan Pembayaran"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuLaporanbActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -166,33 +181,15 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="435" max="-2" attributes="0"/>
-                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="476" max="32767" attributes="0"/>
-              </Group>
+              <EmptySpace min="0" pref="1000" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="311" max="-2" attributes="0"/>
-                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="332" max="32767" attributes="0"/>
-              </Group>
+              <EmptySpace min="0" pref="666" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JButton" name="jButton1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="TRANSAKSI"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
-          </Events>
-        </Component>
-      </SubComponents>
     </Container>
   </SubComponents>
 </Form>
